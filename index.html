@@ -15,8 +15,8 @@
       font-family: 'Cormorant Garamond', serif;
     }
 
-    /* Imagen de fondo */
-    #fondo {
+    /* ─── PANTALLA 1: Pre-invitación ─── */
+    #pantalla1 {
       position: fixed;
       inset: 0;
       background-image: url('CELEDONIOYANAOSPINA.webp');
@@ -25,17 +25,17 @@
       display: flex;
       justify-content: center;
       align-items: center;
+      z-index: 10;
+      transition: opacity 0.9s ease;
     }
 
-    /* Velo oscuro sutil sobre la imagen */
-    #fondo::before {
+    #pantalla1::before {
       content: '';
       position: absolute;
       inset: 0;
       background: rgba(0, 0, 0, 0.25);
     }
 
-    /* Botón */
     #btn-ingresar {
       position: relative;
       z-index: 10;
@@ -46,15 +46,12 @@
       letter-spacing: 4px;
       text-transform: uppercase;
       color: #fff;
-      background: transparent;
+      background: rgba(255,255,255,0.08);
       border: 1.5px solid rgba(255,255,255,0.85);
       cursor: pointer;
       transition: all 0.4s ease;
       backdrop-filter: blur(4px);
       -webkit-backdrop-filter: blur(4px);
-      background: rgba(255,255,255,0.08);
-
-      /* Animación de entrada */
       animation: aparecer 2s ease forwards;
       opacity: 0;
     }
@@ -66,11 +63,8 @@
       letter-spacing: 6px;
     }
 
-    #btn-ingresar:active {
-      transform: scale(0.97);
-    }
+    #btn-ingresar:active { transform: scale(0.97); }
 
-    /* Destellos decorativos en las esquinas del botón */
     #btn-ingresar::before,
     #btn-ingresar::after {
       content: '✦';
@@ -79,38 +73,69 @@
       transform: translateY(-50%);
       font-size: 10px;
       color: rgba(255,255,255,0.6);
-      transition: opacity 0.3s;
     }
     #btn-ingresar::before { left: 14px; }
     #btn-ingresar::after  { right: 14px; }
 
-    /* Animación de aparición del botón */
     @keyframes aparecer {
       0%   { opacity: 0; transform: translateY(18px); }
       100% { opacity: 1; transform: translateY(0); }
     }
 
-    /* Pantalla de transición al hacer clic */
+    /* ─── PANTALLA 2: Google Sites en iframe ─── */
+    #pantalla2 {
+      position: fixed;
+      inset: 0;
+      z-index: 5;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.9s ease;
+    }
+
+    #pantalla2 iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+    }
+
+    /* ─── Estados activos ─── */
+    #pantalla1.oculta {
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    #pantalla2.visible {
+      opacity: 1;
+      pointer-events: all;
+    }
+
+    /* ─── Cortina de transición ─── */
     #cortina {
       position: fixed;
       inset: 0;
       background: #000;
       opacity: 0;
       pointer-events: none;
-      transition: opacity 0.9s ease;
+      transition: opacity 0.5s ease;
       z-index: 999;
     }
-    #cortina.activa {
-      opacity: 1;
-      pointer-events: all;
-    }
+    #cortina.activa { opacity: 1; }
   </style>
 </head>
 <body>
 
-  <!-- Fondo con imagen y botón centrado -->
-  <div id="fondo">
+  <!-- PANTALLA 1 -->
+  <div id="pantalla1">
     <button id="btn-ingresar" onclick="ingresar()">ABRIR INVITACIÓN</button>
+  </div>
+
+  <!-- PANTALLA 2 (se carga al hacer clic) -->
+  <div id="pantalla2">
+    <iframe id="sitio"
+      src=""
+      allow="autoplay; fullscreen"
+      allowfullscreen>
+    </iframe>
   </div>
 
   <!-- Audio -->
@@ -119,27 +144,34 @@
     loop>
   </audio>
 
-  <!-- Cortina de transición -->
+  <!-- Cortina -->
   <div id="cortina"></div>
 
   <script>
     function ingresar() {
-      // 1. Reproducir audio
-      var audio = document.getElementById('player');
-      audio.play().catch(function() {});
-
-      // 2. Guardar en sessionStorage para que la página destino sepa que debe seguir el audio
-      //    (opcional, útil si luego quieres continuidad)
-      try { sessionStorage.setItem('audioActivo', '1'); } catch(e) {}
-
-      // 3. Animación de cortina negra
       var cortina = document.getElementById('cortina');
+      var p1      = document.getElementById('pantalla1');
+      var p2      = document.getElementById('pantalla2');
+      var sitio   = document.getElementById('sitio');
+      var audio   = document.getElementById('player');
+
+      // 1. Reproducir audio (el clic lo permite)
+      audio.play().catch(function(e){ console.log(e); });
+
+      // 2. Mostrar cortina negra
       cortina.classList.add('activa');
 
-      // 4. Redirigir después de la transición
       setTimeout(function() {
-        window.location.href = 'https://sites.google.com/view/xvsarasofiasolanosabi/p%C3%A1gina-principal';
-      }, 950);
+        // 3. Cargar Google Sites en el iframe
+        sitio.src = 'https://sites.google.com/view/xvsarasofiasolanosabi/p%C3%A1gina-principal';
+
+        // 4. Ocultar pantalla 1, mostrar pantalla 2
+        p1.classList.add('oculta');
+        p2.classList.add('visible');
+
+        // 5. Quitar cortina
+        cortina.classList.remove('activa');
+      }, 600);
     }
   </script>
 
