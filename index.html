@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Invitación</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300&display=swap" rel="stylesheet"/>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      width: 100vw;
+      height: 100vh;
+      overflow: hidden;
+      font-family: 'Cormorant Garamond', serif;
+    }
+
+    /* Imagen de fondo */
+    #fondo {
+      position: fixed;
+      inset: 0;
+      background-image: url('https://drive.google.com/file/d/1fcCBaIASn7hrDLfsAuMyjYV_KB-FShsQ/view?usp=sharing');
+      background-size: cover;
+      background-position: center;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    /* Velo oscuro sutil sobre la imagen */
+    #fondo::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.25);
+    }
+
+    /* Botón */
+    #btn-ingresar {
+      position: relative;
+      z-index: 10;
+      padding: 16px 48px;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 18px;
+      font-weight: 300;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      color: #fff;
+      background: transparent;
+      border: 1.5px solid rgba(255,255,255,0.85);
+      cursor: pointer;
+      transition: all 0.4s ease;
+      backdrop-filter: blur(4px);
+      -webkit-backdrop-filter: blur(4px);
+      background: rgba(255,255,255,0.08);
+
+      /* Animación de entrada */
+      animation: aparecer 2s ease forwards;
+      opacity: 0;
+    }
+
+    #btn-ingresar:hover {
+      background: rgba(255,255,255,0.22);
+      border-color: #fff;
+      transform: scale(1.04);
+      letter-spacing: 6px;
+    }
+
+    #btn-ingresar:active {
+      transform: scale(0.97);
+    }
+
+    /* Destellos decorativos en las esquinas del botón */
+    #btn-ingresar::before,
+    #btn-ingresar::after {
+      content: '✦';
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 10px;
+      color: rgba(255,255,255,0.6);
+      transition: opacity 0.3s;
+    }
+    #btn-ingresar::before { left: 14px; }
+    #btn-ingresar::after  { right: 14px; }
+
+    /* Animación de aparición del botón */
+    @keyframes aparecer {
+      0%   { opacity: 0; transform: translateY(18px); }
+      100% { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Pantalla de transición al hacer clic */
+    #cortina {
+      position: fixed;
+      inset: 0;
+      background: #000;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.9s ease;
+      z-index: 999;
+    }
+    #cortina.activa {
+      opacity: 1;
+      pointer-events: all;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Fondo con imagen y botón centrado -->
+  <div id="fondo">
+    <button id="btn-ingresar" onclick="ingresar()">ABRIR INVITACIÓN</button>
+  </div>
+
+  <!-- Audio -->
+  <audio id="player"
+    src="https://drive.google.com/uc?export=download&id=1Jcz6vukKgLfDo8AjtsLLVXFIMLlcTrl6"
+    loop>
+  </audio>
+
+  <!-- Cortina de transición -->
+  <div id="cortina"></div>
+
+  <script>
+    function ingresar() {
+      // 1. Reproducir audio
+      var audio = document.getElementById('player');
+      audio.play().catch(function() {});
+
+      // 2. Guardar en sessionStorage para que la página destino sepa que debe seguir el audio
+      //    (opcional, útil si luego quieres continuidad)
+      try { sessionStorage.setItem('audioActivo', '1'); } catch(e) {}
+
+      // 3. Animación de cortina negra
+      var cortina = document.getElementById('cortina');
+      cortina.classList.add('activa');
+
+      // 4. Redirigir después de la transición
+      setTimeout(function() {
+        window.location.href = 'https://sites.google.com/view/xvsarasofiasolanosabi/p%C3%A1gina-principal';
+      }, 950);
+    }
+  </script>
+
+</body>
+</html>
