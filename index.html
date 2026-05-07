@@ -293,6 +293,48 @@
       background: var(--gold);
       transform: scale(1.5);
     }
+	/* ══ CONFIRMACIÓN ══ */
+#confirmacion {
+  background: var(--dark);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 80px 20px;
+  position: relative;
+}
+
+#confirmacion::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at center, rgba(201,169,110,0.06) 0%, transparent 70%);
+}
+
+#btn-confirmar {
+  position: relative;
+  z-index: 2;
+  padding: 18px 52px;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 13px;
+  font-weight: 300;
+  letter-spacing: 6px;
+  text-transform: uppercase;
+  color: var(--gold-light);
+  background: transparent;
+  border: 1px solid rgba(201,169,110,0.6);
+  text-decoration: none;
+  cursor: pointer;
+  transition: all 0.4s ease;
+  backdrop-filter: blur(4px);
+}
+
+#btn-confirmar:hover {
+  background: rgba(201,169,110,0.15);
+  border-color: var(--gold);
+  letter-spacing: 8px;
+  color: var(--gold);
+}
 
     /* ══ BOTÓN AUDIO FLOTANTE ══ */
     #audio-btn {
@@ -382,6 +424,13 @@
       <img class="img-contenido" src="https://drive.google.com/thumbnail?id=17z3yds60i0cfqnauZX8Iki01JnFTlApD&sz=w1200" alt="Información General"/>
     </div>
   </section>
+	
+ <!-- BOTÓN CONFIRMACIÓN -->
+<section id="confirmacion">
+  <a href="https://wa.link/2241a8" target="_blank" id="btn-confirmar">
+    CONFIRMAR ASISTENCIA
+  </a>
+</section>
 
   <!-- 8. CUENTA REGRESIVA -->
   <section id="countdown">
